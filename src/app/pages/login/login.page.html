@@ -1,33 +1,47 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Inicio de Sesión</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content color="dark">
 
-<ion-content>
-
- <form>
-   <ion-item lines="full">
-     <ion-label position="floating">Email</ion-label>
-     <ion-input type="text" #email required></ion-input>
-   </ion-item>
-   <ion-item lines="full">
-    <ion-label position="floating">Contraseña</ion-label>
-    <ion-input type="password" #password required></ion-input>
-  </ion-item>
-  <ion-row>
-    <ion-col>
-      <ion-button type="submit" (click)="onLogin(email, password)" expand="block">
-        Iniciar Sesión
-      </ion-button>
+  <ion-row class="ion-justify-content-center ion-align-items-center row-avatar">
+    <ion-col class="ion-align-self-center">
+      <ion-avatar class="item-avatar" (click)="onChangeImage()">
+              <img src="../../../assets/img/icono-img.png">
+      </ion-avatar>
     </ion-col>
   </ion-row>
 
+  <!-- <row class="div-avatar">
+
+  </div> -->
+
+ <form [formGroup]="onLoginForm" color="dark">
+   <!-- Hack: evita el autocompletado por default-->
+  <ion-input style="display: none;" type="email"></ion-input>
+  <ion-input style="display: none;" type="password" ></ion-input>
+
+  <ion-item no-padding class="animated fadeInUp" color="dark">
+    <ion-label position="floating">
+      <ion-icon name="person" item-start></ion-icon>
+      Email
+    </ion-label>
+
+    <ion-input type="email" formControlName="user" email ></ion-input>
+  </ion-item>
+
+  <ion-item no-padding class="animated fadeInUp" color="dark">
+    <ion-label position="floating">
+      <ion-icon name="lock-closed" item-start></ion-icon>
+      Contraseña
+    </ion-label>
+    <ion-input [type]="passwordType" formControlName="password" clearOnEdit="false" shape="round" expand="full"></ion-input>
+    <ion-icon slot="end" [name]="passwordIcon" class="passwordIcon" (click)='hideShowPassword()'></ion-icon>
+  </ion-item>
+
   <ion-row>
     <ion-col>
-      <p class="ion-text-end">
-        <a href="/forgout-password">¿Has olvidado tu contraseña?</a>
-      </p>
+      <ion-button  icon-left size="medium" expand="full" shape="round" color="primary"
+        (click)="onLogin()" [disabled]="!onLoginForm.valid" tappable>
+        <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+        INICIAR SESIÓN
+      </ion-button>
     </ion-col>
   </ion-row>
 
@@ -39,16 +53,26 @@
 
   <ion-row>
     <ion-col>
-      <ion-button type="submit" color="danger" (click)="onLoginGoogle()" expand="block">
-        Iniciar Sesión con Google
+      <ion-button icon-left size="medium" expand="full" shape="round" color="primary"
+      type="submit" color="danger" (click)="onLoginGoogle()" expand="block">
+        <ion-icon name="logo-google" slot="start"></ion-icon>
+        CONTINUAR CON GOOGLE
       </ion-button>
     </ion-col>
   </ion-row>
 
   <ion-row>
     <ion-col>
-      <p class="ion-text-end">
+      <p class="ion-text-center">
         <a href="/register">Crear cuenta</a>
+      </p>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col>
+      <p class="ion-text-center">
+        <a href="/forgout-password">¿Has olvidado tu contraseña?</a>
       </p>
     </ion-col>
   </ion-row>
