@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
+import { Camera, CameraResultType, CameraSource, GalleryPhotos, Photo } from '@capacitor/camera';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { Storage } from '@capacitor/storage';
 import { Platform } from '@ionic/angular';
@@ -48,16 +48,33 @@ export class PhotoService {
       return this.photo;
   }
 
-  public async addNewImage(mode: string = '') {
-    // Toma una Foto
-    const capturedPhoto = await Camera.getPhoto({
-      resultType: CameraResultType.Uri, // Datos basados en archivos, proporciona el mejor rendimiento
-      source: CameraSource.Camera, // Toma automáticamente una nueva foto con la cámara
-      quality: 100 // máxima calidad (Rango de calidad de imagen entre 0 a 100)
-    });
+  public async addNewImage(inGallery: boolean = false, mode: string = '') {
 
-    // Guarda la imagen
-    const savedImageFile = await this.savePicture(capturedPhoto);
+    let savedImageFile;
+
+    if(!inGallery){
+      // Toma una Foto
+      const capturedPhoto = await Camera.getPhoto({
+        resultType: CameraResultType.Uri, // Datos basados en archivos, proporciona el mejor rendimiento
+        source: CameraSource.Camera, // Toma automáticamente una nueva foto con la cámara
+        quality: 100 // máxima calidad (Rango de calidad de imagen entre 0 a 100)
+      });
+      // Guarda la imagen
+      savedImageFile = await this.savePicture(capturedPhoto);
+
+    }else{
+      // Toma una Foto
+
+
+      const selectedImageGallery = await Camera.pickImages({
+        quality: 100 // máxima calidad (Rango de calidad de imagen entre 0 a 100)
+      });
+
+      console.log('selectedImageGallery->', selectedImageGallery);
+
+      // Guarda la imagen
+      savedImageFile = await this.savePicture(selectedImageGallery.photos[0]);
+    }
 
     if(mode === 'gallery') {
       // Agrega a la colección de fotos.
@@ -88,7 +105,9 @@ export class PhotoService {
 
   }
 
+  // Convierte un blob a base64
   private async readAsBase64(photo: Photo) {
+    console.log(photo);
     // Obtiene la foto
     const response = await fetch(photo.webPath);
     // Lo lee como un blob
@@ -108,7 +127,7 @@ export class PhotoService {
   });
 
 
-  private async savePicture(photo: Photo) {
+  private async savePicture(photo) {
     // Convierte la foto al formato base64, requerido por la API del sistema de archivos para guardar
     const base64Data = await this.readAsBase64(photo);
 

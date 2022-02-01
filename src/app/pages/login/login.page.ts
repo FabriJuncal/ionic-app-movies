@@ -83,8 +83,9 @@ export class LoginPage{
       buttons: [
         {
           text: 'Galería de imágenes',
-          handler: () => {
+          handler: async () => {
             // this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+            this.photo = await this.photoSvc.addNewImage(true);
           }
         },
         {
@@ -93,7 +94,7 @@ export class LoginPage{
             // this.takePicture(this.camera.PictureSourceType.CAMERA);
 
 
-            this.photo = await this.photoSvc.addNewImage()
+            this.photo = await this.photoSvc.addNewImage();
             // .then(async (image) => image);
 
 
