@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { LoginPageRoutingModule } from './login-routing.module';
 
 import { LoginPage } from './login.page';
+import { SafeUrlPipe } from 'src/app/pipes/safe-resource-url.pipe';
 
 @NgModule({
   imports: [
@@ -15,8 +16,9 @@ import { LoginPage } from './login.page';
     IonicModule,
     LoginPageRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  declarations: [LoginPage]
+  exports: [SafeUrlPipe],
+  declarations: [LoginPage, SafeUrlPipe]
 })
 export class LoginPageModule {}
