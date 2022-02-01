@@ -1,10 +1,12 @@
 <ion-content color="dark">
 
   <ion-row class="ion-justify-content-center ion-align-items-center row-avatar">
-    <ion-col class="ion-align-self-center">
-      <ion-avatar class="item-avatar" (click)="onChangeImage()">
-              <img src="../../../assets/img/icono-img.png">
-      </ion-avatar>
+    <ion-col class="ion-align-self-center" (click)="onChangeImage()">
+      <!-- <ion-avatar class="item-avatar" (click)="onChangeImage()"> -->
+              <img class="img-avatar" *ngIf="!photo.webviewPath" src="../../../assets/img/icono-img.png">
+      <!-- </ion-avatar> -->
+              <img class="img-avatar" *ngIf="photo.webviewPath" [src]="photo.webviewPath | safeResourceUrl">
+
     </ion-col>
   </ion-row>
 

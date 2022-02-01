@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
+import { PhotoService } from '../../services/photo.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -9,19 +10,26 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage{
 
   public onLoginForm: FormGroup;
 
   passwordType = 'password';
   passwordIcon = 'eye-off';
+  isPhoto: boolean;
+  photo = {
+    filepath: '',
+    webviewPath: ''
+  };
 
   constructor(private authSvc: AuthService,
               private router: Router,
               private formBuilder: FormBuilder,
-              private actionSheetCtrl: ActionSheetController) {}
+              private actionSheetCtrl: ActionSheetController,
+              public photoSvc: PhotoService) {}
 
-  ngOnInit() {
+  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
+  async ngOnInit() {
     // Muestra los datos de la Sesión del Usuario en la consola
     // this.authSvc.authStateUser()
     // .subscribe(user => {
@@ -32,6 +40,9 @@ export class LoginPage implements OnInit {
       user: ['', Validators.compose([Validators.required])],
       password: ['', Validators.compose([Validators.required])]
     });
+
+    // Carga la imagen almacenado en el Local
+    await this.onLoadImage();
   }
 
   public hideShowPassword() {
@@ -78,8 +89,14 @@ export class LoginPage implements OnInit {
         },
         {
           text: 'Cámara de fotos',
-          handler: () => {
+          handler: async () => {
             // this.takePicture(this.camera.PictureSourceType.CAMERA);
+
+
+            this.photo = await this.photoSvc.addNewImage()
+            // .then(async (image) => image);
+
+
           }
         },
         {
@@ -91,6 +108,11 @@ export class LoginPage implements OnInit {
     await actionSheet.present();
   }
 
+  async  onLoadImage(){
+    this.photo = await this.photoSvc.loadImage();
+    this.isPhoto = this.photoSvc.photo.webviewPath ? true : false;
+  }
+
   // Verifica que el email del usuario se encuentre verificado y redirecciona
   private  redirectUser(isVerified: boolean): void {
     if(isVerified){
@@ -99,6 +121,8 @@ export class LoginPage implements OnInit {
       this.router.navigateByUrl('/verify-email');
     }
   }
+
+
 
 
 
