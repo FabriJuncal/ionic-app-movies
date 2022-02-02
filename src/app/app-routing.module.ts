@@ -39,6 +39,18 @@ const routes: Routes = [
     loadChildren: () => import('./pages/forgout-password/forgout-password.module').then( m => m.ForgoutPasswordPageModule),
     canActivate:[NotAuthGuard]
   },
+  {
+    path: 'edit-movie',
+    loadChildren: () => import('./pages/edit-movie/edit-movie.module').then( m => m.EditMoviePageModule)
+  },
+  {
+    path: 'add-movie',
+    loadChildren: () => import('./pages/add-movie/add-movie.module').then( m => m.AddMoviePageModule)
+  },
+  {
+    path: 'view-movie',
+    loadChildren: () => import('./pages/view-movie/view-movie.module').then( m => m.ViewMoviePageModule)
+  },
 ];
 
 @NgModule({
