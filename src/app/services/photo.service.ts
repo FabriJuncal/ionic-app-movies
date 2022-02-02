@@ -7,7 +7,7 @@ import { Camera,
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { Storage } from '@capacitor/storage';
 import { Platform } from '@ionic/angular';
-import { UserPhoto } from '../interfaces/photointerface';
+import { UserPhoto } from '../interfaces/photo.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +41,7 @@ export class PhotoService {
       // Recuperar datos de matriz de fotos del Local Storage
       const photo = await Storage.get({ key: this.PHOTO_STORAGE });
 
+      // Si no existen datos en el Local Storage, se crea una matriz vacia
       if(!photo.value){
         Storage.set({
           key: this.PHOTO_STORAGE,
@@ -54,10 +55,6 @@ export class PhotoService {
 
   public async addNewImage(opcion: string, mode: string = '') {
 
-
-    console.log('opcion->', opcion);
-    console.log('mode->', mode);
-
     const source = opcion === 'camera' ? CameraSource.Camera : CameraSource.Photos;
     // const resultType = opcion === 'camera' ? CameraResultType.Uri : CameraResultType.DataUrl; 
 
@@ -70,14 +67,10 @@ export class PhotoService {
     // Obtiene la imagen
     const capturedPhoto = await Camera.getPhoto(opcionPicture);
 
-    console.log('capturedPhoto->', capturedPhoto);
-
     // Guarda la imagen
     const savedImageFile = await this.savePicture(capturedPhoto);
 
-    console.log('savedImageFile->', savedImageFile);
-
-    // Definimos las variables dependiendo del modo seleccionado
+    // Almecena la imagen en el Local Storage deacuerdo al modo seleccionado
     const key = mode === 'gallery' ? this.PHOTOS_STORAGE : this.PHOTO_STORAGE;
 
     let picture;
@@ -93,8 +86,6 @@ export class PhotoService {
       key,
       value: JSON.stringify(picture)
     });
-
-    console.log('picture->', picture);
     return picture;
   }
 
