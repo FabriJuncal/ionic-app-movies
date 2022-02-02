@@ -84,17 +84,15 @@ export class LoginPage{
         {
           text: 'Galería de imágenes',
           handler: async () => {
-            // this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
-            this.photo = await this.photoSvc.addNewImage(true);
+
+            this.photo = await this.photoSvc.addNewImage('select');
           }
         },
         {
           text: 'Cámara de fotos',
           handler: async () => {
-            // this.takePicture(this.camera.PictureSourceType.CAMERA);
 
-
-            this.photo = await this.photoSvc.addNewImage();
+            this.photo = await this.photoSvc.addNewImage('camera');
             // .then(async (image) => image);
 
 

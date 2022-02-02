@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Camera, CameraResultType, CameraSource, GalleryPhotos, Photo } from '@capacitor/camera';
+import { Camera,
+        CameraResultType,
+        CameraSource,
+        Photo,
+        ImageOptions } from '@capacitor/camera';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { Storage } from '@capacitor/storage';
 import { Platform } from '@ionic/angular';
@@ -16,18 +20,23 @@ export class PhotoService {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   private PHOTO_STORAGE = 'photo';
 
-  constructor() { }
+  constructor() {
+    Camera.requestPermissions({permissions:['photos']});
+  }
 
 
-  public async loadSaved(mode: string = '') {
-    if(mode === 'gallery') {
-      // Recuperar datos de matriz de fotos del Local Storage
-      const photoList = await Storage.get({ key: this.PHOTOS_STORAGE });
-      this.photos = JSON.parse(photoList.value) || [];
-    }
+  // Carga imagenes de la Galeria
+  public async loadImages() {
+
+    // Recuperar datos de matriz de fotos del Local Storage
+    const photoList = await Storage.get({ key: this.PHOTOS_STORAGE });
+    this.photos = JSON.parse(photoList.value) || [];
+    return this.photos;
+
 
   }
 
+  // Cagar imagen del Avatar
   public async loadImage(){
       // Recuperar datos de matriz de fotos del Local Storage
       const photo = await Storage.get({ key: this.PHOTO_STORAGE });
@@ -39,75 +48,58 @@ export class PhotoService {
         });
       }
 
-      console.log('photo->', photo);
-
       this.photo = await JSON.parse(photo.value) || [];
-
-      console.log('this.photo->', this.photo);
-
       return this.photo;
   }
 
-  public async addNewImage(inGallery: boolean = false, mode: string = '') {
-
-    let savedImageFile;
-
-    if(!inGallery){
-      // Toma una Foto
-      const capturedPhoto = await Camera.getPhoto({
-        resultType: CameraResultType.Uri, // Datos basados en archivos, proporciona el mejor rendimiento
-        source: CameraSource.Camera, // Toma automáticamente una nueva foto con la cámara
-        quality: 100 // máxima calidad (Rango de calidad de imagen entre 0 a 100)
-      });
-      // Guarda la imagen
-      savedImageFile = await this.savePicture(capturedPhoto);
-
-    }else{
-      // Toma una Foto
+  public async addNewImage(opcion: string, mode: string = '') {
 
 
-      const selectedImageGallery = await Camera.pickImages({
-        quality: 100 // máxima calidad (Rango de calidad de imagen entre 0 a 100)
-      });
+    console.log('opcion->', opcion);
+    console.log('mode->', mode);
 
-      console.log('selectedImageGallery->', selectedImageGallery);
+    const source = opcion === 'camera' ? CameraSource.Camera : CameraSource.Photos;
+    // const resultType = opcion === 'camera' ? CameraResultType.Uri : CameraResultType.DataUrl; 
 
-      // Guarda la imagen
-      savedImageFile = await this.savePicture(selectedImageGallery.photos[0]);
-    }
+    const opcionPicture: ImageOptions = {
+      source,
+      resultType : CameraResultType.Uri,
+      quality: 100
+    };
 
+    // Obtiene la imagen
+    const capturedPhoto = await Camera.getPhoto(opcionPicture);
+
+    console.log('capturedPhoto->', capturedPhoto);
+
+    // Guarda la imagen
+    const savedImageFile = await this.savePicture(capturedPhoto);
+
+    console.log('savedImageFile->', savedImageFile);
+
+    // Definimos las variables dependiendo del modo seleccionado
+    const key = mode === 'gallery' ? this.PHOTOS_STORAGE : this.PHOTO_STORAGE;
+
+    let picture;
     if(mode === 'gallery') {
-      // Agrega a la colección de fotos.
       this.photos.unshift(savedImageFile);
-
-      // Guardamos los datos de las imagenes de las en el Local Storage
-      Storage.set({
-        key: this.PHOTOS_STORAGE,
-        value: JSON.stringify(this.photos),
-      });
-
-      return this.photos;
-
+      picture = this.photos;
     }else{
-
       this.photo = savedImageFile;
-
-      // Guardamos los datos de las imagenes de las en el Local Storage
-      Storage.set({
-        key: this.PHOTO_STORAGE,
-        value: JSON.stringify(this.photo),
-      });
-
-      return this.photo;
+      picture = this.photo;
     }
 
+    Storage.set({
+      key,
+      value: JSON.stringify(picture)
+    });
 
-
+    console.log('picture->', picture);
+    return picture;
   }
 
   // Convierte un blob a base64
   private async readAsBase64(photo: Photo) {
-    console.log(photo);
     // Obtiene la foto
     const response = await fetch(photo.webPath);
     // Lo lee como un blob
@@ -138,10 +130,6 @@ export class PhotoService {
       data: base64Data,
       directory: Directory.Data
     });
-
-    console.log('savedFile->', savedFile);
-    console.log('this.photos->', this.photos);
-    console.log('this.photo->', this.photo.webviewPath);
 
     // Se usa .webPath para mostrar la nueva imagen en lugar de base64 ya que este es ya cargado en memoria
     return {
