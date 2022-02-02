@@ -1,0 +1,37 @@
+[
+    {
+        "title": "The Shawshank Redemption",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "rating": 3,
+        "img": "../../../assets/img/img-movie.png",
+        "uid": "9XGS0cNH9QYY3iedY0zUp6DMYSe2"
+    },
+    {
+        "title": "The Godfather",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry." ,
+        "rating": 1,
+        "img": "../../../assets/img/img-movie.png",
+        "uid": "9XGS0cNH9QYY3iedY0zUp6DMYSe2"
+    },
+    {
+        "title": "The Godfather: Part II",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "rating": 2,
+        "img": "../../../assets/img/img-movie.png",
+        "uid": "9XGS0cNH9QYY3iedY0zUp6DMYSe2"
+    },
+    {
+        "title": "The Dark Knight",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "rating": 3,
+        "img": "../../../assets/img/img-movie.png",
+        "uid": "9XGS0cNH9QYY3iedY0zUp6DMYSe2"
+    },
+    {
+        "title": "12 Angry",
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "rating": 4,
+        "img": "../../../assets/img/img-movie.png",
+        "uid": "9XGS0cNH9QYY3iedY0zUp6DMYSe2"
+    }
+]
