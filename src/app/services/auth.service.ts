@@ -1,5 +1,7 @@
+import { JsonPipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Storage } from '@capacitor/storage';
 
 import { getAuth,
          signOut,
@@ -13,8 +15,7 @@ import { getAuth,
         } from 'firebase/auth';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import { Observable, of } from 'rxjs';
-
-import { User } from '../shared/user.interface';
+import { User } from '../interfaces/user.interface';
 
 
 @Injectable({
@@ -87,6 +88,18 @@ export class AuthService {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
 
       this.updateUserData(user);
+
+      const dataUser: User = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        emailVerified: user.emailVerified
+      };
+
+      Storage.set({
+        key: 'user',
+        value: JSON.stringify(dataUser)
+      });
       return user;
 
     } catch(error){
