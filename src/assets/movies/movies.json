@@ -1,35 +1,45 @@
 [
     {
         "title": "The Shawshank Redemption",
-        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "shortDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "longDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "year": 1994,
         "rating": 3,
         "img": "../../../assets/img/img-movie.png",
         "uid": "9XGS0cNH9QYY3iedY0zUp6DMYSe2"
     },
     {
         "title": "The Godfather",
-        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry." ,
+        "shortDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "longDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "year": 1972,
         "rating": 1,
         "img": "../../../assets/img/img-movie.png",
         "uid": "9XGS0cNH9QYY3iedY0zUp6DMYSe2"
     },
     {
         "title": "The Godfather: Part II",
-        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "shortDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "longDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "year": 1974,
         "rating": 2,
         "img": "../../../assets/img/img-movie.png",
         "uid": "9XGS0cNH9QYY3iedY0zUp6DMYSe2"
     },
     {
         "title": "The Dark Knight",
-        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "shortDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "longDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "year": 2008,
         "rating": 3,
         "img": "../../../assets/img/img-movie.png",
         "uid": "9XGS0cNH9QYY3iedY0zUp6DMYSe2"
     },
     {
         "title": "12 Angry",
-        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "shortDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "longDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "year": 1974,
         "rating": 4,
         "img": "../../../assets/img/img-movie.png",
         "uid": "9XGS0cNH9QYY3iedY0zUp6DMYSe2"
