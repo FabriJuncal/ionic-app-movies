@@ -1,9 +1,67 @@
+
 <ion-header>
-  <ion-toolbar>
-    <ion-title>view-movie</ion-title>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button (click)="toGetBack()">
+        <ion-icon name="arrow-back-outline" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content color="dark">
 
+  <ion-grid color="dark" class="display-flex ion-justify-content-center ion-align-items-center">
+  
+        <!-- ion-align-items: Ordena de manera Vertical -->
+        <!-- <ion-row class="ion-align-items-center" 
+                 (click)="openArticle()">
+  
+          <ion-col>
+            <span class="text-primary"> 
+              {{ index + 1 }}. 
+            </span>
+            <span class="movie-source-name">
+              {{ movie.source.name }}
+            </span>
+          </ion-col>
+  
+        </ion-row>
+   -->
+  
+  
+
+   <ion-row class="">
+     <ion-col class="">
+      <h1>{{ movie.title}}</h1> 
+     </ion-col>
+    </ion-row>
+
+    <ion-row class="">
+      <ion-col class="">
+        <img class="" [src]="movie.img">
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="row-rate-year">
+      <ion-col size="ion-text-start"> 
+        <p class="lb-rate-movie"> Calificación </p>
+        <div class="div-rate-movie">
+          <ion-icon slot="icon-only" name="{{start}}"  *ngFor="let start of movie.rating"></ion-icon>
+        </div>
+      </ion-col>
+      <ion-col class="ion-text-end">
+        <p class=""> {{movie.year | date:'dd-MM-yyyy'}} </p>
+      </ion-col>  
+    </ion-row>
+
+    <ion-row class="">
+      <ion-col class="ion-align-self-start">
+        <p>
+          {{ movie.longDescription }}
+        </p>
+      </ion-col>
+    </ion-row>
+  
+  </ion-grid>
 </ion-content>
