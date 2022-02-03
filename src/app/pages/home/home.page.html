@@ -24,21 +24,21 @@
             <ion-icon slot="icon-only" name="trash"></ion-icon>
           </ion-item-option>
         </ion-item-options>
-        <ion-item color="dark" (click)="redirectPage('view-movie')">
+        <ion-item color="dark" (click)="redirectPage('view-movie', movie)">
           <ion-img slot="start" class="img-movie "  src="{{movie.img}}"></ion-img>
           <div>
             <h2 >{{ movie.title }}</h2>
             <p>
-              {{ movie.description }}
+              {{ movie.shortDescription }}
             </p>
-            <p class="lb-rate-movie">Rate</p>
+            <p class="lb-rate-movie">Calificación</p>
             <div class="div-rate-movie">
               <ion-icon slot="icon-only" name="{{start}}"  *ngFor="let start of movie.rating"></ion-icon>
             </div>
           </div> 
         </ion-item>
         <ion-item-options side="end">
-          <ion-item-option color="success" (click)="redirectPage('edit-movie')">
+          <ion-item-option color="success" (click)="redirectPage('edit-movie', movie)">
             <ion-icon slot="icon-only" name="create"></ion-icon>
           </ion-item-option>
         </ion-item-options>
@@ -47,7 +47,7 @@
   </ion-list>
 
   <ion-fab  vertical="bottom" horizontal="center" slot="fixed" color="light">
-    <ion-fab-button color="light" (click)="redirectPage('add-movie')">
+    <ion-fab-button color="light" (click)="redirectPage('add-movie', movie)">
       <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>

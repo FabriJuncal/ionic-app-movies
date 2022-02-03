@@ -2,8 +2,12 @@ import {Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { AuthService } from '../../services/auth.service';
 import { MoviesService } from '../../services/movies.service';
-import { Movies } from '../../interfaces/movies.interface';
+import { Movies, MovieWithRating } from '../../interfaces/movies.interface';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { ViewMoviePage } from '../view-movie/view-movie.page';
+import { AddMoviePage } from '../add-movie/add-movie.page';
+import { EditMoviePage } from '../edit-movie/edit-movie.page';
 
 @Component({
   selector: 'app-home',
@@ -13,11 +17,12 @@ import { Router } from '@angular/router';
 export class HomePage implements OnInit{
 
   movies: any;
-  iconoRate = 'star-outline';
+  movie: MovieWithRating;
+  modal: any;
 
   constructor(private authSvc: AuthService,
               private moviesSvc: MoviesService,
-              private router: Router) {
+              private modalCtrl: ModalController) {
 
 
        this.getMovies();
@@ -34,35 +39,27 @@ export class HomePage implements OnInit{
   // Obtiene las Peliculas
   async getMovies(){
     this.movies = await this.moviesSvc.getMoviesDefault();
-    this.movies = this.movies.map(element => this.getRateMovie(element));
+    this.movies = this.movies.map(element => this.moviesSvc.getRateMovie(element));
 
     console.log('movies->', this.movies);
   }
 
-  // Crea un nuevo array con las peliculas y su estrellas
-  getRateMovie(movie: Movies){
-    const startRate = [];
-    for (let i = 0; i < 5; i++) {
-
-      const valueRate = movie.rating > i ? 'star' : 'star-outline';
-      startRate.push(valueRate);
-
-    }
-
-    const moviesWithRate = {
-      uid: movie.uid,
-      title: movie.title,
-      description: movie.description,
-      rating: startRate,
-      img: movie.img
-    };
-
-    return moviesWithRate;
-  }
-
   // Redirecciona que se le pasa como parametro
-  redirectPage(page: string){
-    this.router.navigate([`/${page}`]);
+  async redirectPage(page: string, movie: MovieWithRating){
+
+    const component = page === 'view-movie' ? ViewMoviePage : page === 'add-movie' ? AddMoviePage: EditMoviePage;
+
+    // con la función importada, creamos el modal, para eso se le pasa el siguiente objeto con sus respectivos datos
+    this.modal = await this.modalCtrl.create({
+      component,
+      componentProps: {
+        movie
+      }
+
+    });
+
+    await this.modal.present();
+    // this.router.navigate([`/${page}`]);
   }
 
 
