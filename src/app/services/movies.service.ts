@@ -37,4 +37,28 @@ export class MoviesService {
   getFilteredByKey(array, key, value) {
     return array.filter((e) =>e[key] === value);
   }
+
+  // Helper que crea un nuevo array con las peliculas y su estrellas
+  getRateMovie(movie: Movies){
+
+    const startRate = [];
+    for (let i = 0; i < 5; i++) {
+
+      const valueRate = movie.rating > i ? 'star' : 'star-outline';
+      startRate.push(valueRate);
+
+    }
+
+    const moviesWithRate = {
+      uid: movie.uid,
+      title: movie.title,
+      shortDescription: movie.shortDescription,
+      longDescription: movie.longDescription,
+      year: movie.year,
+      rating: startRate,
+      img: movie.img
+    };
+
+    return moviesWithRate;
+  }
 }
