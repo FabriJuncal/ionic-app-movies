@@ -140,9 +140,6 @@ export class MoviesService {
     urlPhotoMovie = JSON.parse(urlPhotoMovie.value);
     const img = urlPhotoMovie[0].webviewPath ? urlPhotoMovie[0].webviewPath : movie.img;
 
-    console.log(img);
-    const movieEncontrada = this.localMovies = this.localMovies.filter( localMovies => localMovies.hash === movie.hash );
-    console.log(movieEncontrada);
     if(!img){
       return false;
     }
