@@ -1,5 +1,6 @@
 
-export interface Movies {
+export interface Movie {
+    hash: string;
     title: string;
     shortDescription: string;
     longDescription: string;
