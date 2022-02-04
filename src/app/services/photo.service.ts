@@ -7,56 +7,69 @@ import { Camera,
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { Storage } from '@capacitor/storage';
 import { Platform } from '@ionic/angular';
-import { UserPhoto } from '../interfaces/photo.interface';
+import { Picture } from '../interfaces/photo.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PhotoService {
-  public photos: UserPhoto[] = [];
-  public photo;
+  public photo: Picture[];
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  private PHOTOS_STORAGE = 'photos';
+  private PHOTO_MOVIE_STORAGE = 'photo_movie';
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  private PHOTO_STORAGE = 'photo';
+  private PHOTO_LOGO_STORAGE = 'photo_logo';
 
   constructor() {
+    // Función necesaria para tener acceso a la galeria de fotos del usuario
     Camera.requestPermissions({permissions:['photos']});
   }
 
 
   // Carga imagenes de la Galeria
-  public async loadImages() {
+  // public async loadImages() {
 
-    // Recuperar datos de matriz de fotos del Local Storage
-    const photoList = await Storage.get({ key: this.PHOTOS_STORAGE });
-    this.photos = JSON.parse(photoList.value) || [];
-    return this.photos;
+  //   // Recuperar datos de matriz de fotos del Local Storage
+  //   const photoList = await Storage.get({ key: this.PHOTO_MOVIE_STORAGE });
+  //   this.photos = JSON.parse(photoList.value) || [];
+  //   return this.photos;
 
 
-  }
+  // }
 
   // Cagar imagen del Avatar
-  public async loadImage(){
+  public async loadImage(logoOrMovie: string = ''){
+
+      const key = logoOrMovie === 'movie' ? this.PHOTO_MOVIE_STORAGE : this.PHOTO_LOGO_STORAGE;
       // Recuperar datos de matriz de fotos del Local Storage
-      const photo = await Storage.get({ key: this.PHOTO_STORAGE });
+      const photo = await Storage.get({ key });
 
       // Si no existen datos en el Local Storage, se crea una matriz vacia
       if(!photo.value){
+
+        const photoEmpty = {
+          filepath: '',
+          webviewPath: ''
+        };
+
         Storage.set({
-          key: this.PHOTO_STORAGE,
-          value:  JSON.stringify([]),
+          key,
+          value:  JSON.stringify([photoEmpty]),
         });
+
+        this.photo = [photoEmpty];
+
+      }else{
+        this.photo = await JSON.parse(photo.value);
       }
 
-      this.photo = await JSON.parse(photo.value) || [];
       return this.photo;
   }
 
-  public async addNewImage(opcion: string, mode: string = '') {
+  // Función que carga la foto al local storage
+  public async addNewImage(opcion: string, logoOrMovie: string = '') {
 
     const source = opcion === 'camera' ? CameraSource.Camera : CameraSource.Photos;
-    // const resultType = opcion === 'camera' ? CameraResultType.Uri : CameraResultType.DataUrl; 
+    // const resultType = opcion === 'camera' ? CameraResultType.Uri : CameraResultType.DataUrl;
 
     const opcionPicture: ImageOptions = {
       source,
@@ -71,22 +84,16 @@ export class PhotoService {
     const savedImageFile = await this.savePicture(capturedPhoto);
 
     // Almecena la imagen en el Local Storage deacuerdo al modo seleccionado
-    const key = mode === 'gallery' ? this.PHOTOS_STORAGE : this.PHOTO_STORAGE;
+    const key = logoOrMovie === 'movie' ? this.PHOTO_MOVIE_STORAGE : this.PHOTO_LOGO_STORAGE;
 
-    let picture;
-    if(mode === 'gallery') {
-      this.photos.unshift(savedImageFile);
-      picture = this.photos;
-    }else{
-      this.photo = savedImageFile;
-      picture = this.photo;
-    }
+      this.photo = [savedImageFile];
 
     Storage.set({
       key,
-      value: JSON.stringify(picture)
+      value: JSON.stringify(this.photo)
     });
-    return picture;
+
+    return this.photo;
   }
 
   // Convierte un blob a base64
