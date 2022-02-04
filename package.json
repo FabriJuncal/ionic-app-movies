@@ -1,8 +1,8 @@
 {
-  "name": "ionic-login",
+  "name": "movie-application-fj",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "Fabricio Juncal",
+  "homepage": "https://ionic-login-7fe8b.web.app/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
