@@ -2,16 +2,17 @@ import { JsonPipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Storage } from '@capacitor/storage';
+import { ToastController } from '@ionic/angular';
 
 import { getAuth,
          signOut,
          signInWithEmailAndPassword,
          createUserWithEmailAndPassword,
          sendEmailVerification,
-         signInWithPopup,
          GoogleAuthProvider,
          sendPasswordResetEmail,
-         onAuthStateChanged
+         onAuthStateChanged,
+         signInWithRedirect
         } from 'firebase/auth';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import { Observable, of } from 'rxjs';
@@ -25,8 +26,13 @@ export class AuthService {
 
   // Observable que almacena la session del usuario
   public user$: Observable<User>;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  private PHOTO_MOVIE_STORAGE =  'photo_movie';
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  private DATA_USER_STORAGE = 'user';
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private toastController: ToastController) {
     this.user$ = this.authStateUser();
   }
 
@@ -37,6 +43,17 @@ export class AuthService {
         const unsubscribe = onAuthStateChanged(auth, subscriber);
         return unsubscribe;
     });
+  }
+
+  // Esta función es la que mostrará el mensaje en el Toast
+  async presentToast(message: string, color: string = 'dark') {
+    const toast = await this.toastController.create({
+      message,
+      duration: 6000,
+      color,
+      position: 'top'
+    });
+    toast.present();
   }
 
   // Envía un correo de recuperación de contraseña
@@ -56,7 +73,7 @@ export class AuthService {
 
       const provider = new GoogleAuthProvider();
       const auth = getAuth();
-      const {user} = await signInWithPopup(auth, provider);
+      const {user} = await signInWithRedirect(auth, provider);
 
       this.updateUserData(user);
       return user;
@@ -76,7 +93,8 @@ export class AuthService {
       return user;
 
     } catch(error){
-      console.log('Error->', error);
+      const message = 'El Correo electrónico ingresado ya se encuentra registrado';
+      this.presentToast(message, 'danger');
     }
   }
 
@@ -97,13 +115,15 @@ export class AuthService {
       };
 
       Storage.set({
-        key: 'user',
-        value: JSON.stringify(dataUser)
+        key: this.DATA_USER_STORAGE,
+        value: JSON.stringify([dataUser])
       });
+
       return user;
 
     } catch(error){
-      console.log('Error->', error);
+      const message = 'Correo electrónico o contraseña incorrectos';
+      this.presentToast(message, 'danger');
     }
   }
 
@@ -132,12 +152,19 @@ export class AuthService {
   async logout(): Promise<void> {
     try{
 
-      console.log(this.user$);
+      // Eliminamos la imagen cargada anteriormente para el alta de una película
+      await Storage.remove({
+        key: this.PHOTO_MOVIE_STORAGE
+      });
+
+
       if(this.user$){
         const auth = getAuth();
         signOut(auth).then(() => {
-          // Sign-out successful.
-          console.log('Sign-out successful');
+
+          const message = 'Se ha cerrado la sesión';
+          this.presentToast(message, 'success');
+
           this.router.navigate(['/login']);
 
         }).catch((error) => {
@@ -155,7 +182,6 @@ export class AuthService {
   // Actualiza los datos del usuario al logearse
   private updateUserData(user: User){
 
-    console.log('user->', user);
     const db = getFirestore();
     const userRef = doc(db, `users/${user.uid}`);
 
