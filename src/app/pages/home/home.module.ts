@@ -11,6 +11,7 @@ import { EditMoviePage } from '../edit-movie/edit-movie.page';
 import { ViewMoviePageModule } from '../view-movie/view-movie.module';
 import { AddMoviePageModule } from '../add-movie/add-movie.module';
 import { EditMoviePageModule } from '../edit-movie/edit-movie.module';
+import { LoginPageModule } from '../login/login.module';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { EditMoviePageModule } from '../edit-movie/edit-movie.module';
     HomePageRoutingModule,
     ViewMoviePageModule,
     AddMoviePageModule,
-    EditMoviePageModule
+    EditMoviePageModule,
+    LoginPageModule
   ],
   declarations: [HomePage]
 })

@@ -2,8 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { AuthService } from '../../services/auth.service';
 import { MoviesService } from '../../services/movies.service';
-import { Movies, MovieWithRating } from '../../interfaces/movies.interface';
-import { Router } from '@angular/router';
+import { MovieWithRating, Movie } from '../../interfaces/movies.interface';
 import { ModalController } from '@ionic/angular';
 import { ViewMoviePage } from '../view-movie/view-movie.page';
 import { AddMoviePage } from '../add-movie/add-movie.page';
@@ -19,13 +18,20 @@ export class HomePage implements OnInit{
   movies: any;
   movie: MovieWithRating;
   modal: any;
+  getRateMovie: any;
 
-  constructor(private authSvc: AuthService,
-              private moviesSvc: MoviesService,
-              private modalCtrl: ModalController) {
+  constructor(
+    private authSvc: AuthService,
+    private moviesSvc: MoviesService,
+    private modalCtrl: ModalController) {
 
 
-       this.getMovies();
+    this.getMovies();
+    this.getRateMovie = this.moviesSvc.getRateMovie;
+  }
+
+  get dataMovies(): Movie[]{
+    return this.moviesSvc.getLocalMovies;
   }
 
   ngOnInit() {
@@ -36,16 +42,19 @@ export class HomePage implements OnInit{
     await this.authSvc.logout();
   }
 
-  // Obtiene las Peliculas
-  async getMovies(){
-    this.movies = await this.moviesSvc.getMoviesDefault();
-    this.movies = this.movies.map(element => this.moviesSvc.getRateMovie(element));
+  // Elimina la pelicula
+  async onDeleteMovie(movie: Movie){
+    await this.moviesSvc.deleteMovie(movie);
+    this.getMovies();
+  }
 
-    console.log('movies->', this.movies);
+  // Obtiene las Peliculas
+  getMovies(){
+    this.moviesSvc.loadMovies();
   }
 
   // Redirecciona que se le pasa como parametro
-  async redirectPage(page: string, movie: MovieWithRating){
+  async redirectPage(page: string, movie: Movie = null){
 
     const component = page === 'view-movie' ? ViewMoviePage : page === 'add-movie' ? AddMoviePage: EditMoviePage;
 

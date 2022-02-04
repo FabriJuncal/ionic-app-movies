@@ -17,37 +17,41 @@
 
 
   <ion-list>
-    <ion-item-sliding *ngFor="let movie of movies">
+    <ion-item-sliding *ngFor="let dataMovie of dataMovies">
       <ion-card color="dark">
+
         <ion-item-options side="start">
-          <ion-item-option color="danger">
+          <ion-item-option color="danger" (click)="onDeleteMovie(dataMovie)">
             <ion-icon slot="icon-only" name="trash"></ion-icon>
           </ion-item-option>
         </ion-item-options>
-        <ion-item color="dark" (click)="redirectPage('view-movie', movie)">
-          <ion-img slot="start" class="img-movie "  src="{{movie.img}}"></ion-img>
+
+        <ion-item color="dark" (click)="redirectPage('view-movie', dataMovie)">
+          <ion-img slot="start" class="img-movie "  src="{{dataMovie.img}}"></ion-img>
           <div>
-            <h2 >{{ movie.title }}</h2>
+            <h2 >{{ dataMovie.title }}</h2>
             <p>
-              {{ movie.shortDescription }}
+              {{ dataMovie.shortDescription }}
             </p>
             <p class="lb-rate-movie">Calificación</p>
             <div class="div-rate-movie">
-              <ion-icon slot="icon-only" name="{{start}}"  *ngFor="let start of movie.rating"></ion-icon>
+              <ion-icon slot="icon-only" name="{{start}}"  *ngFor="let start of this.getRateMovie(dataMovie.rating)"></ion-icon>
             </div>
           </div> 
         </ion-item>
+
         <ion-item-options side="end">
-          <ion-item-option color="success" (click)="redirectPage('edit-movie', movie)">
+          <ion-item-option color="success" (click)="redirectPage('edit-movie', dataMovie)">
             <ion-icon slot="icon-only" name="create"></ion-icon>
           </ion-item-option>
         </ion-item-options>
+
       </ion-card>
     </ion-item-sliding>
   </ion-list>
 
   <ion-fab  vertical="bottom" horizontal="center" slot="fixed" color="light">
-    <ion-fab-button color="light" (click)="redirectPage('add-movie', movie)">
+    <ion-fab-button color="light" (click)="redirectPage('add-movie')">
       <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
