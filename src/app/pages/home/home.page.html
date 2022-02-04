@@ -16,6 +16,15 @@
 <ion-content [fullscreen]="true" color="dark" >
 
 
+  <div class="list-empty"
+      *ngIf="dataMovies?.length === 0">
+    <ion-item class="ion-text-center" color="dark">
+      <ion-label text-center>
+        Agregue peliculas para poder verlas aquí.
+      </ion-label>
+    </ion-item>
+  </div>
+
   <ion-list>
     <ion-item-sliding *ngFor="let dataMovie of dataMovies">
       <ion-card color="dark">
