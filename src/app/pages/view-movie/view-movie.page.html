@@ -12,24 +12,6 @@
 <ion-content color="dark">
 
   <ion-grid color="dark" class="display-flex ion-justify-content-center ion-align-items-center">
-  
-        <!-- ion-align-items: Ordena de manera Vertical -->
-        <!-- <ion-row class="ion-align-items-center" 
-                 (click)="openArticle()">
-  
-          <ion-col>
-            <span class="text-primary"> 
-              {{ index + 1 }}. 
-            </span>
-            <span class="movie-source-name">
-              {{ movie.source.name }}
-            </span>
-          </ion-col>
-  
-        </ion-row>
-   -->
-  
-  
 
    <ion-row class="">
      <ion-col class="">
@@ -39,7 +21,7 @@
 
     <ion-row class="">
       <ion-col class="">
-        <img class="" [src]="movie.img">
+        <img class="" [src]="movie.img | safeResourceUrl">
       </ion-col>
     </ion-row>
 
@@ -47,11 +29,12 @@
       <ion-col size="ion-text-start"> 
         <p class="lb-rate-movie"> Calificación </p>
         <div class="div-rate-movie">
-          <ion-icon slot="icon-only" name="{{start}}"  *ngFor="let start of movie.rating"></ion-icon>
+          <ion-icon slot="icon-only" name="{{start}}" (click)="addRating(movie, i+1)"  *ngFor="let start of this.getRateMovie(movie.rating); let i = index"></ion-icon>
         </div>
       </ion-col>
       <ion-col class="ion-text-end">
-        <p class=""> {{movie.year | date:'dd-MM-yyyy'}} </p>
+        <p class="lb-year-movie"> Estreno </p>
+        <p class="p-year-movie"> {{ movie.year }} </p>
       </ion-col>  
     </ion-row>
 

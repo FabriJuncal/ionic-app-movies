@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { MovieWithRating } from '../../interfaces/movies.interface';
+import { MovieWithRating, Movie } from '../../interfaces/movies.interface';
+import { MoviesService } from '../../services/movies.service';
 
 @Component({
   selector: 'app-view-movie',
@@ -9,9 +10,15 @@ import { MovieWithRating } from '../../interfaces/movies.interface';
 })
 export class ViewMoviePage implements OnInit {
 
-  @Input() movie: MovieWithRating;
+  @Input() movie: Movie;
 
-  constructor(private modalCtrl: ModalController) { }
+  getRateMovie: any;
+
+  constructor(private modalCtrl: ModalController,
+              private moviesSvc: MoviesService) {
+
+    this.getRateMovie = this.moviesSvc.getRateMovie;
+  }
 
   ngOnInit() {
     console.log(this.movie);
@@ -19,6 +26,13 @@ export class ViewMoviePage implements OnInit {
 
   toGetBack(){
     this.modalCtrl.dismiss();
+  }
+
+  async addRating(movie: Movie, rating: number){
+    this.movie = await this.moviesSvc.addRating(movie, rating);
+    this.getRateMovie = await this.moviesSvc.getRateMovie;
+
+    console.log(this.getRateMovie);
   }
 
 }
