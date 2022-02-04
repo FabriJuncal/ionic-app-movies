@@ -1,9 +1,78 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>edit-movie</ion-title>
+<ion-header class="ion-no-border" translucent>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button (click)="toGetBack()">
+        <ion-icon name="arrow-back-outline" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Editar Película</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content color="dark">
+  <ion-grid color="dark" class="display-flex ion-justify-content-center ion-align-items-center">
+    <ion-row class="ion-justify-content-center ion-align-items-center row-avatar">
+      <ion-col class="ion-align-self-center" (click)="onAddImage()"
+               *ngFor="let photo of photos">
+        <!-- <ion-avatar class="item-avatar" (click)="onChangeImage()"> -->
+                <img class="img-movie" *ngIf="!photo.webviewPath" [src]="movie.img | safeResourceUrl">
+        <!-- </ion-avatar> -->
+                <img class="img-movie" *ngIf="photo.webviewPath" [src]="photo.webviewPath | safeResourceUrl">
+
+      </ion-col>
+    </ion-row>
+
+    <!--  -->
+    <form [formGroup]="formAddMovie"  class="form-add-movie">
+      <ion-input style="display: none;" type="text" formControlName="img"></ion-input>
+
+      <ion-item no-padding class="animated fadeInUp" color="dark" class="input-title">
+        <ion-label class="text-dark" position="floating">
+          <!-- <ion-icon name="title" item-start></ion-icon> -->
+          Título
+        </ion-label>
+        <ion-input class="text-dark" type="text" formControlName="title"></ion-input>
+      </ion-item>
+
+      <ion-item no-padding class="animated fadeInUp" color="dark">
+        <ion-label position="floating">
+          <!-- <ion-icon name="year" item-start></ion-icon> -->
+          Año de Estreno
+        </ion-label>
+        <ion-input type="number" formControlName="year" min="2" max="5"></ion-input>
+      </ion-item>
+
+      <ion-item no-padding class="animated fadeInUp" color="dark">
+        <ion-label position="floating">
+          <!-- <ion-icon name="shortDescription" item-start></ion-icon> -->
+            Descripción Corta
+        </ion-label>
+        <ion-input class="text-dark" type="text" formControlName="shortDescription"></ion-input>
+      </ion-item>
+
+      <ion-item no-padding class="animated fadeInUp" color="dark">
+        <ion-label position="floating">
+          <!-- <ion-icon name="longDescription" ></ion-icon> -->
+          Descripción Larga
+        </ion-label>
+        <!-- <ion-input class="text-dark" [type]="passwordType" formControlName="contrasena" clearOnEdit="false"></ion-input>
+        <ion-icon slot="end" [name]="passwordIcon" class="passwordIcon" (click)='hideShowPassword()'></ion-icon> -->
+        <ion-textarea rows="5" cols="20" formControlName="longDescription" placeholder="Ingrese una descripción larga...."></ion-textarea>
+      </ion-item>
+
+      <ion-row class="ion-margin-top">
+        <ion-col>
+          <ion-button  icon-left size="medium" expand="full" shape="round" color="primary"
+            (click)="onEditMovie()" [disabled]="!formAddMovie.valid" tappable>
+            <!-- <ion-icon name="person-circle-outline" slot="start"></ion-icon> -->
+            Editar Película
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+    </form>
+  
+  </ion-grid>
 
 </ion-content>
+
