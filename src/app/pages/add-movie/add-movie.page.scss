@@ -1,0 +1,31 @@
+.display-flex{
+  display: flex;
+  flex-direction: column;
+}
+
+.img-avatar{
+  width: 170px;
+  height: 170px;
+  border-radius: 150px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  margin-top: 81%;
+  margin-bottom: 35%;
+}
+
+.img-movie{
+  margin-top: 5%;
+  margin-bottom: 0%;
+  max-height: 350px !important;
+  height: 350px !important;
+}
+
+.form-add-movie{
+  width: 100%;
+}
+
+.input-title{
+  width: 100%;
+  font-size: larger;
+}
