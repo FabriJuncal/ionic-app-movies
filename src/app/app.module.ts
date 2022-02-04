@@ -14,6 +14,7 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { provideRemoteConfig,getRemoteConfig } from '@angular/fire/remote-config';
+import { SafeUrlPipe } from './pipes/safe-resource-url.pipe';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,7 +30,7 @@ import { provideRemoteConfig,getRemoteConfig } from '@angular/fire/remote-config
     provideDatabase(() => getDatabase()),
     provideFirestore(() => getFirestore()),
     provideRemoteConfig(() => getRemoteConfig())],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, ScreenTrackingService,UserTrackingService],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, ScreenTrackingService,UserTrackingService, SafeUrlPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
