@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../interfaces/user.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-verify-email',
@@ -13,7 +14,8 @@ export class VerifyEmailPage implements OnInit, OnDestroy{
   // Obtenemos los datos de la sesión del Usuario
   user$: Observable<User> = this.authSvc.user$;
 
-  constructor(private authSvc: AuthService) { }
+  constructor(private authSvc: AuthService,
+              private router: Router) { }
 
   ngOnInit() {
     // Muestra los datos de la Sesión del Usuario en la consola
@@ -21,6 +23,10 @@ export class VerifyEmailPage implements OnInit, OnDestroy{
     // .subscribe(user => {
     //   console.log('userdata->',user);
     // });
+  }
+
+  onRedirecLogin(){
+    this.router.navigateByUrl('/login');
   }
 
   // Función para enviar el correo de verificación

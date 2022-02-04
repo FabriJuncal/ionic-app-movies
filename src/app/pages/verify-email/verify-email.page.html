@@ -1,10 +1,10 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="dark">
     <ion-title>Verificación de Email</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="user$ | async as user">
+<ion-content *ngIf="user$ | async as user" color="dark">
 
     <ion-row>
       <ion-col>
@@ -16,7 +16,15 @@
 
     <ion-row>
       <ion-col>
-        <ion-button type="submit" (click)="onSendEmail()" expand="block"> Reenviar mensaje de verificación </ion-button>
+        <ion-button icon-left size="medium" expand="full" shape="round" color="primary"
+                    (click)="onSendEmail()"> Reenviar mensaje de verificación </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-button icon-left size="medium" expand="full" shape="round" color="primary"
+                    (click)="onRedirecLogin()"> Ir a Inicio de Sesión </ion-button>
       </ion-col>
     </ion-row>
 

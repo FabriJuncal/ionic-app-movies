@@ -1,7 +1,8 @@
 <ion-content color="dark">
 
   <ion-row class="ion-justify-content-center ion-align-items-center row-avatar">
-    <ion-col class="ion-align-self-center" (click)="onChangeImage()">
+    <ion-col class="ion-align-self-center" (click)="onChangeImage()"
+             *ngFor="let photo of photos">
       <!-- <ion-avatar class="item-avatar" (click)="onChangeImage()"> -->
               <img class="img-avatar" *ngIf="!photo.webviewPath" src="../../../assets/img/icono-img.png">
       <!-- </ion-avatar> -->
@@ -21,10 +22,9 @@
 
   <ion-item no-padding class="animated fadeInUp" color="dark">
     <ion-label position="floating">
-      <ion-icon name="person" item-start></ion-icon>
+      <ion-icon name="mail" item-start></ion-icon>
       Email
     </ion-label>
-
     <ion-input type="email" formControlName="user" email ></ion-input>
   </ion-item>
 

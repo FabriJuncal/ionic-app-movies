@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
 import { PhotoService } from '../../services/photo.service';
 import { AuthService } from '../../services/auth.service';
+import { Picture } from '../../interfaces/photo.interface';
 
 @Component({
   selector: 'app-login',
@@ -17,10 +18,7 @@ export class LoginPage{
   passwordType = 'password';
   passwordIcon = 'eye-off';
   isPhoto: boolean;
-  photo = {
-    filepath: '',
-    webviewPath: ''
-  };
+  photos: Picture[] = [];
 
   constructor(private authSvc: AuthService,
               private router: Router,
@@ -38,7 +36,7 @@ export class LoginPage{
 
     this.onLoginForm = this.formBuilder.group({
       user: ['', Validators.compose([Validators.required])],
-      password: ['', Validators.compose([Validators.required])]
+      password: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
     });
 
     // Carga la imagen almacenado en el Local
@@ -85,14 +83,14 @@ export class LoginPage{
           text: 'Galería de imágenes',
           handler: async () => {
 
-            this.photo = await this.photoSvc.addNewImage('select');
+            this.photos = await this.photoSvc.addNewImage('select');
           }
         },
         {
           text: 'Cámara de fotos',
           handler: async () => {
 
-            this.photo = await this.photoSvc.addNewImage('camera');
+            this.photos = await this.photoSvc.addNewImage('camera');
             // .then(async (image) => image);
 
 
@@ -108,15 +106,19 @@ export class LoginPage{
   }
 
   async  onLoadImage(){
-    this.photo = await this.photoSvc.loadImage();
-    this.isPhoto = this.photoSvc.photo.webviewPath ? true : false;
+    this.photos = await this.photoSvc.loadImage();
+    // this.isPhoto = this.photoSvc.photo[0].webviewPath ? true : false;
   }
 
   // Verifica que el email del usuario se encuentre verificado y redirecciona
   private  redirectUser(isVerified: boolean): void {
     if(isVerified){
+      const message = 'Inicio de Sesión Exitoso';
+      this.authSvc.presentToast(message, 'success');
       this.router.navigateByUrl('/home');
     }else{
+      const message = 'Verifique su correo electrónico';
+      this.authSvc.presentToast(message, 'warning');
       this.router.navigateByUrl('/verify-email');
     }
   }
